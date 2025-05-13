@@ -1,0 +1,27 @@
+# Provide HTCondor with the name of your .sif file and universe information
+# this checkm2 container is downloaded from the usegalaxy.org website.
+container_image = file:///projects/bacteriology_tran_data//binning_wf_containers/checkm2.sif
+
+executable = checkm.sh
+arguments = $(location) $(request_cpus) $(db)
+
+location = /staging/ptran5/dog_microbiome/
+db = /projects/bacteriology_tran_data/checkm2_database/CheckM2_database/uniref100.KO.1.dmnd
+
+# Include other files that need to be transferred here.
+transfer_output_files = checkm_out.tar.gz, checkm_out/quality_report.tsv
+transfer_output_remaps = "checkm_out.tar.gz=file://$(location)/checkm_out.tar.gz;checkm_out/quality_report.tsv=file://$(location)/quality_report.tsv"
+
+log = logs/checkm_$(cluster)_$(process).log
+error = logs/checkm_$(cluster)_$(process).err
+output = logs/checkm_$(cluster)_$(process).out
+
+# make sure chtc projects is there because the Checkm database is there.
+requirements = (HasCHTCStaging == true) && (OpSysMajorVer > 7) && (HasChtcProjects == true)
+
+# Make sure you request enough disk for the container image in addition to your other input files
+request_cpus = 8
+request_memory = 16GB
+request_disk = 20GB    
+
+queue  

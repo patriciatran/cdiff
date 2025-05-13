@@ -1,0 +1,5 @@
+scripts/dag/dags_examples/*
+logs
+scripts/logs
+scripts/dag/dag_examples/
+

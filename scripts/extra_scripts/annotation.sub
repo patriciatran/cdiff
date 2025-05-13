@@ -1,0 +1,23 @@
+container_image = file:///projects/bacteriology_tran_data/apptainer/bakta1.10.3.sif
+
+executable = annotation.sh
+arguments = $(sample) $(request_cpus)
+
+
+staging = /staging/ptran5/dog_microbiome
+
+requirements = (HasCHTCStaging == true) && (HasChtcProjects == true)
+		
+log = logs/bakta1.10.3_$(sample).log
+error = logs/bakta1.10.3_$(sample).err
+output = logs/bakta1.10.3_$(sample).out
+
+transfer_input_files = file://$(staging)/$(sample)_scaffolds.fasta
+transfer_output_files =  bakta_$(sample).tar.gz
+transfer_output_remaps = "bakta_$(sample).tar.gz=file://$(staging)/bakta_$(sample)_1.10.3.tar.gz"
+
+request_cpus = 8
+request_memory = 50GB
+request_disk = 25GB
+   
+queue sample from samples.txt

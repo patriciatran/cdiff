@@ -1,0 +1,13 @@
+container_image = docker://staphb/mlst:2.23.0-2024-12-31
+
+executable = genotype_cdiff.sh
+arguments = $(sample)
+
+log = logs/genotype_$(sample).txt
+
+# Change depending on your file sizes.
+request_cpus = 1
+request_memory = 1GB
+request_disk = 1GB
+
+queue sample from samples.txt
